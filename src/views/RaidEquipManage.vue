@@ -1,7 +1,10 @@
 <template>
   <div class="container my-6">
-    <owned-equip :members="members" />
-    <equip-count-by-layer :members="members" />
+    <div v-if="message" class="message text-accent pa-2 radius-md">
+      {{ message }}
+    </div>
+    <owned-equip :members="members" @get_message="on_get_message" />
+    <equip-count-by-layer :members="members" @get_message="on_get_message" />
   </div>
 </template>
 <script>
@@ -15,11 +18,27 @@ export default {
   },
   data: () => ({
     members: [],
+    message: "",
   }),
   async mounted() {
     this.members = await fetch_collection("raid_members");
   },
+  methods: {
+    on_get_message(message) {
+      this.message = message;
+      setTimeout(() => {
+        this.message = "";
+      }, 1000 * 1);
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
+.message {
+  position: absolute;
+  left: 45vw;
+  top: 7vh;
+  opacity: 0.8;
+  border: solid 1px var(--accent-color);
+}
 </style>

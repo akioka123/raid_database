@@ -1,12 +1,22 @@
 <template>
   <div id="app">
-    <header class="tool-bar header">ヘッド</header>
+    <div class="row tool-bar header text-white">
+      <h3 class="ma-3">装備チェック</h3>
+      <h3 class="ma-3">{{ user_name }}</h3>
+    </div>
     <div class="main back">
       <router-view />
     </div>
-    <footer class="tool-bar footer">フット</footer>
   </div>
 </template>
+<script>
+import { mapState } from "vuex";
+export default {
+  computed: {
+    ...mapState(["user_name"]),
+  },
+};
+</script>
 
 <style lang="scss">
 @import "./src/assets/main.scss";
@@ -28,7 +38,7 @@ body {
 }
 .tool-bar {
   margin-top: 0px;
-  display: block;
+  display: flex;
   flex: 1 1 auto;
   max-width: 100%;
   position: absolute;
@@ -62,35 +72,11 @@ body {
 }
 .back {
   background: whitesmoke;
-  background-image: repeating-radial-gradient(
-      circle at 2em 2.2em,
-      var(--main-color),
-      var(--main-color) 0.96em,
-      transparent 0.96em,
-      transparent 16em
-    ),
-    repeating-radial-gradient(
-      circle at 0.9em 0.96em,
-      var(--main-color),
-      var(--main-color) 0.4em,
-      transparent 0.44em,
-      transparent 16em
-    ),
-    repeating-radial-gradient(
-      circle at 2em 0.6em,
-      var(--main-color),
-      var(--main-color) 0.4em,
-      transparent 0.4em,
-      transparent 16em
-    ),
-    repeating-radial-gradient(
-      circle at 3em 0.96em,
-      var(--main-color),
-      var(--main-color) 0.4em,
-      transparent 0.4em,
-      transparent 20em
-    );
+
   background-position: 1.2em 1.8em;
   background-size: 7.2em 7.2em;
+}
+.height20 {
+  height: 20px;
 }
 </style>

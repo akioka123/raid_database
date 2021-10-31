@@ -1,5 +1,11 @@
 module.exports = {
   publicPath: "./",
+  pages: {
+    index: {
+      entry: "src/main.js",
+      title: "TM暁月のフィナーレ",
+    },
+  },
   css: {
     loaderOptions: {
       sass: {

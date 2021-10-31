@@ -57,16 +57,30 @@ export async function set_doc(collection_name, doc_name, data) {
 
 export async function update_equip_hvaing(equip) {
   const member_doc_ref = doc(db, "raid_members", equip.member_id);
+  let message = "所持状況の更新に失敗しました。";
+  let result_data = {};
+  let result = false;
   try {
     await runTransaction(db, async (transaction) => {
-      transaction.update(member_doc_ref, {
-        [equip.equip_type]: { having: !equip.having, token: equip.token },
-      });
+      const member_doc = await transaction.get(member_doc_ref);
+      const equip_info = member_doc.data()[equip.equip_type];
+      if (equip_info.having === equip.having) {
+        equip.having = !equip.having;
+        transaction.update(member_doc_ref, {
+          [equip.equip_type]: { having: equip.having, token: equip.token },
+        });
+        message = "所持状況を更新しました。";
+        result_data = equip;
+        result = true;
+      } else {
+        result_data = equip_info;
+        message = "所持状況が更新されていました。";
+      }
     });
-    return true;
+    return { message, result, data: result_data };
   } catch (e) {
     console.error(e);
-    return false;
+    return { message, result, data: result_data };
   }
 }
 
@@ -109,19 +123,43 @@ export async function update_equip_hvaing(equip) {
 export async function update_layer_equip_count(
   layer_id,
   equip_type,
-  equip_type_map
+  equip_type_map,
+  member_name,
+  count
 ) {
   const layer_doc_ref = doc(db, "layer6.0", layer_id);
+  let message = "所持数の更新に失敗しました。";
+  let result_data = {};
+  let result = false;
   try {
     await runTransaction(db, async (transaction) => {
-      transaction.update(layer_doc_ref, {
-        [equip_type]: equip_type_map,
-      });
-      return true;
+      const layer_doc = await transaction.get(layer_doc_ref);
+      const layer_data = layer_doc.data();
+      const equip_data = layer_data[equip_type];
+      if (count === equip_data[member_name]) {
+        transaction.update(layer_doc_ref, {
+          [equip_type]: equip_type_map,
+        });
+        message = "所持数を更新しました。";
+        result_data = equip_type_map;
+        result = true;
+      } else {
+        result_data = equip_data;
+        message = "所持数が更新されていました。";
+      }
     });
+    return {
+      message,
+      data: result_data,
+      result,
+    };
   } catch (e) {
     console.error(e);
-    return false;
+    return {
+      message,
+      data: result_data,
+      result,
+    };
   }
 }
 

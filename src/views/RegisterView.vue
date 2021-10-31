@@ -23,7 +23,7 @@ const MEMBER = {
     having: false,
     token: false,
   },
-  ring1: {
+  ring: {
     having: false,
     token: false,
   },
@@ -47,15 +47,15 @@ const MEMBER = {
     token: false,
     having: false,
   },
-  ring2: {
-    having: false,
-    token: false,
-  },
   foot: {
     token: false,
     having: false,
   },
   head: {
+    token: false,
+    having: false,
+  },
+  weapon: {
     token: false,
     having: false,
   },

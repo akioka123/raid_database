@@ -1,9 +1,5 @@
 <template>
-  <span
-    class="chip radius-md px-3 py-1 ma-1"
-    :class="class_text"
-    :style="styles"
-  >
+  <span class="chip radius-md ma-1" :class="class_text" :style="styles">
     <slot></slot>
   </span>
 </template>
@@ -29,6 +25,5 @@ export default {
 .chip {
   width: var(--chip-width);
   height: var(--chip-height);
-  cursor: pointer;
 }
 </style>
