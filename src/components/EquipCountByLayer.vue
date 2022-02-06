@@ -89,6 +89,10 @@ const EQUIP_TYPES = {
   neckless: "首",
   blethlet: "腕",
   ring: "指",
+  torm: "トームストーン",
+  drug: "硬化薬",
+  stdrug: "強化薬",
+  armor: "強化繊維",
 };
 
 export default {

@@ -40,7 +40,7 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import FcButton from "../components/FcButton.vue";
-import { get_doc } from "../firebase/firebase";
+import { get_doc, set_doc } from "../firebase/firebase";
 export default {
   components: { FcButton },
   data: () => ({
@@ -69,11 +69,26 @@ export default {
       const member_infos_doc = await get_doc("members", "member_info");
       this.member_infos = member_infos_doc.data();
     },
+    async logging_user_login(user_name) {
+      const now = new Date();
+      const doc_name =
+        now.getFullYear().toString() +
+        ("0" + (now.getMonth() + 1)).slice(-2) +
+        ("0" + now.getDate()).slice(-2);
+      const logging_login = (await get_doc("logs", doc_name)).data();
+      console.log(logging_login);
+      await set_doc("logs", doc_name, {
+        ...logging_login,
+        [user_name]: now.toString(),
+      });
+    },
     async login_user() {
       const password_hash = await this.encode_sha_256(this.password);
       const saved_hash = this.member_infos.member_password[this.selected];
       if (password_hash === saved_hash) {
         this.set_user_name(this.selected);
+        sessionStorage.setItem("user_name", this.selected);
+        this.logging_user_login(this.selected);
         this.$router.push("/equip_manage");
       } else {
         this.error_message = "パスワードが間違っています。";

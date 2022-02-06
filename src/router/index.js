@@ -7,8 +7,19 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "",
+    name: "LoginView",
     component: LoginView,
+    beforeEnter: (to, from, next) => {
+      const session_user_name = sessionStorage.getItem("user_name");
+      if (store.state.user_name) {
+        next({ name: "RaidEquipManage" });
+      } else if (session_user_name) {
+        store.dispatch("set_user_name", session_user_name);
+        next({ name: "RaidEquipManage" });
+      } else {
+        next();
+      }
+    },
   },
   {
     path: "/equip_manage",
@@ -38,6 +49,13 @@ const routes = [
     path: "/login",
     name: "LoginView",
     component: () => import("../views/LoginView.vue"),
+    beforeEnter: (to, from, next) => {
+      if (store.state.user_name) {
+        next({ name: "RaidEquipManage" });
+      } else {
+        next({ name: "LoginView" });
+      }
+    },
   },
 ];
 

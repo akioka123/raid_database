@@ -35,7 +35,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .message {
-  position: absolute;
+  position: fixed;
   left: 45vw;
   top: 7vh;
   opacity: 0.8;

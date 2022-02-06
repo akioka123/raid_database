@@ -3,7 +3,7 @@ module.exports = {
   pages: {
     index: {
       entry: "src/main.js",
-      title: "TM暁月のフィナーレ",
+      title: "TM 暁月のフィナーレ",
     },
   },
   css: {
