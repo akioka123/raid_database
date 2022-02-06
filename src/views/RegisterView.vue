@@ -12,6 +12,9 @@
       }}
       <button @click="regist_layer_doc()">登録</button>
     </div>
+    <div>入力項目</div>
+    <input name="input_name" type="text" v-model="input_name" />{{ input_name }}
+    <button @click="register_input()">登録</button>
   </div>
 </template>
 
@@ -67,8 +70,23 @@ export default {
     job: "",
     layer_num: 0,
     equip_type: "",
+    input_name: "",
   }),
   methods: {
+    async register_input() {
+      const member_data_list = await fetch_collection("raid_members");
+      member_data_list.forEach((member_ref) => {
+        const member_id = member_ref.id;
+        const member_info = member_ref.data();
+        set_doc("raid_members", member_id, {
+          ...member_info,
+          [this.input_name]: {
+            having: false,
+            token: true,
+          },
+        });
+      });
+    },
     register_member() {
       set_doc("raid_members", this.game_name, {
         ...MEMBER,

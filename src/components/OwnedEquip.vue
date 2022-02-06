@@ -92,6 +92,7 @@ import { update_equip_hvaing } from "../firebase/firebase";
 
 const EQUIP_TYPES = {
   weapon: "武器",
+  token_weapon: "武器",
   head: "頭",
   body: "胴",
   hand: "手",
@@ -101,6 +102,7 @@ const EQUIP_TYPES = {
   neckless: "首",
   blethlet: "腕",
   ring: "指",
+  token_ring: "指",
 };
 
 const STRATEGY_LIST = [
