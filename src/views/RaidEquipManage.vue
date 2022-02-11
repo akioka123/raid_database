@@ -1,6 +1,6 @@
 <template>
   <div class="container my-6">
-    <div v-if="message" class="message text-accent pa-2 radius-md">
+    <div v-if="message" class="message pa-2 radius-md" :class="message_type">
       {{ message }}
     </div>
     <owned-equip :members="members" @get_message="on_get_message" />
@@ -19,13 +19,15 @@ export default {
   data: () => ({
     members: [],
     message: "",
+    message_type: null,
   }),
   async mounted() {
     this.members = await fetch_collection("raid_members");
   },
   methods: {
-    on_get_message(message) {
+    on_get_message(message, message_type) {
       this.message = message;
+      this.message_type = message_type;
       setTimeout(() => {
         this.message = "";
       }, 1000 * 1);
@@ -39,6 +41,15 @@ export default {
   left: 45vw;
   top: 7vh;
   opacity: 0.8;
-  border: solid 1px var(--accent-color);
+  z-index: 10;
+}
+
+.success {
+  background-color: #4caf50;
+  color: white;
+}
+.error {
+  background-color: #f44336;
+  color: white;
 }
 </style>

@@ -265,7 +265,7 @@ export default {
     },
     async update_having(equip) {
       const response = await update_equip_hvaing(equip);
-      this.emit_message(response.message);
+      this.emit_message(response.message, response.result);
       if (response.result) {
         equip.having = response.data.having;
       }
@@ -285,8 +285,8 @@ export default {
     formatted_equip_type(key) {
       return EQUIP_TYPES[key];
     },
-    emit_message(message) {
-      this.$emit("get_message", message);
+    emit_message(message, result) {
+      this.$emit("get_message", message, result ? "success" : "error");
     },
   },
 };

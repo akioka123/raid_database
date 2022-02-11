@@ -200,7 +200,7 @@ export default {
         member_name,
         count
       );
-      this.emit_message(response.message);
+      this.emit_message(response.message, response.result);
       this.layer_info[target_index].layer_data[equip_type] = response.data;
     },
     formated_member_name(member_id) {
@@ -218,8 +218,8 @@ export default {
     convert_equip_to_jp(equip) {
       return EQUIP_TYPES[equip];
     },
-    emit_message(message) {
-      this.$emit("get_message", message);
+    emit_message(message, result) {
+      this.$emit("get_message", message, result);
     },
   },
 };
