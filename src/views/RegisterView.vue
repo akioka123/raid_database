@@ -1,20 +1,49 @@
 <template>
   <div>
-    <input name="game_name" type="text" v-model="game_name" />{{ game_name }}
-    <input name="jp_name" type="text" v-model="jp_name" />{{ jp_name }}
-    <input name="job" type="text" v-model="job" />{{ job }}
-    <button @click="register_member()">登録</button>
     <div>
-      何層かを一桁数字で入力
-      <input name="layer_num" type="text" v-model="layer_num" />{{ layer_num }}
-      <input name="equip_type" type="text" v-model="equip_type" />{{
-        equip_type
-      }}
-      <button @click="regist_layer_doc()">登録</button>
+      レイドメンバー登録
+      <div>
+        <span for="game_name">キャラ名</span>
+        <input name="game_name" type="text" v-model="game_name" />
+      </div>
+      <div>
+        <span for="game_name">ディスコ名</span>
+        <input name="jp_name" type="text" v-model="jp_name" />
+      </div>
+      <div>
+        <span for="game_name">ジョブ</span>
+        <input name="job" type="text" v-model="job" />
+      </div>
+      <div>
+        <button @click="register_member()">登録</button>
+      </div>
     </div>
-    <div>入力項目</div>
-    <input name="input_name" type="text" v-model="input_name" />{{ input_name }}
-    <button @click="register_input()">登録</button>
+    <div style="border: dashed 1px black; margin: 5px 0"></div>
+    <div>
+      ドロップ登録
+      <div>
+        <span for="layer_num">何層かを一桁数字で入力</span>
+        <input name="layer_num" type="text" v-model="layer_num" />
+      </div>
+      <div>
+        <span for="layer_num">アイテム種別入力</span>
+        <input name="equip_type" type="text" v-model="equip_type" />
+      </div>
+      <div>
+        <button @click="regist_layer_doc()">登録</button>
+      </div>
+    </div>
+    <div style="border: dashed 1px black; margin: 5px 0"></div>
+    <div>
+      メンバー取得アイテム種別追加
+      <div>
+        <span for="layer_num">アイテム種別名</span>
+        <input name="input_name" type="text" v-model="input_name" />
+      </div>
+      <div>
+        <button @click="register_input()">登録</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -60,6 +89,14 @@ const MEMBER = {
   },
   weapon: {
     token: false,
+    having: false,
+  },
+  token_weapon: {
+    token: true,
+    having: false,
+  },
+  token_ring: {
+    token: true,
     having: false,
   },
 };
