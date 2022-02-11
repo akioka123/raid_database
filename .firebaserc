@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "tm-cloud-base"
-  }
+    "default": "tm-cloud-base",
+    "dev": "tmclouddev-65d18",
+    "prod": "tm-cloud-base"
+  },
+  "targets": {}
 }
