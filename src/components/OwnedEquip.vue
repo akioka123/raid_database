@@ -44,6 +44,7 @@
           class_text="col col-3 ma-0 d-flex flex-center pa-1 radius-tag pl-8"
           :class="member_name_color(equip_of_member.equip_list)"
         >
+          <img :src="equip_of_member.job" class="job-icon" />
           {{ equip_of_member.member_name }}
         </fc-chip>
         <div class="col text-left py-1">
@@ -255,9 +256,16 @@ export default {
               }
               return;
             });
+          let job_icon;
+          try {
+            job_icon = require("@/assets/" + member_data.job + ".png");
+          } catch (e) {
+            job_icon = null;
+          }
 
           return {
-            member_name: `${member_data.member_name} : ${member_data.job}`,
+            member_name: `${member_data.member_name}`,
+            job: job_icon,
             equip_list: equip_list,
             token_equip_list: token_equip_list,
           };
@@ -318,5 +326,8 @@ export default {
   padding: 0.5rem;
   font-size: 1rem;
   list-style-type: none !important;
+}
+.job-icon {
+  width: 32px;
 }
 </style>

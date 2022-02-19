@@ -7,6 +7,11 @@
     <div class="main back">
       <router-view />
     </div>
+    <div class="row tool-bar footer text-white">
+      <h3 class="ma-3">
+        (C) SQUARE ENIX CO., LTD. All Rights Reserved. 2022 Toi et Moi
+      </h3>
+    </div>
   </div>
 </template>
 <script>
@@ -63,6 +68,7 @@ body {
   height: 48px;
   position: fixed;
   bottom: 0;
+  margin-bottom: 0px !important;
 }
 .main {
   min-height: calc(100vh - 96px - 16px);
@@ -72,7 +78,6 @@ body {
 }
 .back {
   background: whitesmoke;
-
   background-position: 1.2em 1.8em;
   background-size: 7.2em 7.2em;
 }
