@@ -1,8 +1,10 @@
 <template>
   <div class="container my-6">
-    <div v-if="message" class="message pa-2 radius-md" :class="message_type">
-      {{ message }}
-    </div>
+    <transition name="message" mode="in-out">
+      <div v-if="message" class="message pa-2 radius-md" :class="message_type">
+        {{ message }}
+      </div>
+    </transition>
     <owned-equip :members="members" @get_message="on_get_message" />
     <equip-count-by-layer :members="members" @get_message="on_get_message" />
   </div>
@@ -29,7 +31,7 @@ export default {
       this.message = message;
       this.message_type = message_type;
       setTimeout(() => {
-        this.message = "";
+        this.message = false;
       }, 1000 * 1);
     },
   },
@@ -51,5 +53,12 @@ export default {
 .error {
   background-color: #f44336;
   color: white;
+}
+
+.message-enter .message-leave-to {
+  opacity: 0;
+}
+.message-enter-active .message-leave-active {
+  transition: opacity 0.5s ease;
 }
 </style>
