@@ -24,17 +24,23 @@
           class="pa-0"
           autocomplete="current-password"
           required
+          tabindex="1"
+          autofocus
         />
-        <span class="password_watch" @click="change_password_type"
-          ><fc-icon :icon_name="password_icon"
-        /></span>
+        <span class="password_watch" @click="change_password_type">
+          <fc-icon :icon_name="password_icon" />
+        </span>
       </div>
-      <fc-button
-        class="py-2 px-7 radius-md bg-white"
-        @click.native="login_user()"
-      >
-        ログイン
-      </fc-button>
+      <div>
+        <fc-button
+          class="py-2 px-7 radius-md bg-white"
+          @click.native="login_user()"
+          @keydown.enter.native="login_user()"
+          tabindex="2"
+        >
+          ログイン
+        </fc-button>
+      </div>
       <div v-if="error_message" class="bg-accent text-white radius-lg my-4">
         {{ error_message }}
       </div>
@@ -81,6 +87,14 @@ export default {
     async fetch_member_infos() {
       const member_infos_doc = await get_doc("members", "member_info");
       this.member_infos = member_infos_doc.data();
+      this.member_name_list = Object.entries(this.member_infos).map(
+        ([member_name]) => {
+          console.log(member_name);
+          return member_name;
+        }
+      );
+      console.log(Object.entries(this.member_infos));
+      console.log(this.member_name_list);
     },
     async logging_user_login(user_name) {
       const now = new Date();
@@ -97,7 +111,7 @@ export default {
     },
     async login_user() {
       const password_hash = await this.encode_sha_256(this.password);
-      const saved_hash = this.member_infos.member_password[this.selected];
+      const saved_hash = this.member_infos[this.selected].password;
       if (password_hash === saved_hash) {
         this.set_user_name(this.selected);
         sessionStorage.setItem("user_name", this.selected);

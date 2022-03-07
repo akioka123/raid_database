@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="row tool-bar header text-white">
+    <div class="row tool-bar header text-white shadow-1">
       <h3 class="ma-3">装備チェック_V5</h3>
       <h3 class="ma-3">{{ user_name }}</h3>
     </div>
@@ -8,7 +8,7 @@
       <router-view />
     </div>
     <div class="row tool-bar footer text-white">
-      <h3 class="ma-3">
+      <h3 class="ma-3 font-size-middle">
         (C) SQUARE ENIX CO., LTD. All Rights Reserved. 2022 Toi et Moi
       </h3>
     </div>
