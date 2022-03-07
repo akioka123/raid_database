@@ -93,6 +93,7 @@ const EQUIP_TYPES = {
   drug: "硬化薬",
   stdrug: "強化薬",
   armor: "強化繊維",
+  mount: "マウント",
 };
 
 export default {
@@ -219,7 +220,7 @@ export default {
       return EQUIP_TYPES[equip];
     },
     emit_message(message, result) {
-      this.$emit("get_message", message, result);
+      this.$emit("get_message", message, result ? "success" : "error");
     },
   },
 };

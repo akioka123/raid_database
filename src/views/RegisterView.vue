@@ -44,6 +44,27 @@
         <button @click="register_input()">登録</button>
       </div>
     </div>
+    <div style="border: dashed 1px black; margin: 5px 0"></div>
+    <div>
+      装備の要素追加
+      <div>
+        <span for="layer_num">要素キー</span>
+        <input
+          name="equip_content_name"
+          type="text"
+          v-model="equip_content_name"
+        />
+        <span for="layer_num">初期値</span>
+        <input
+          name="equip_content_value"
+          type="text"
+          v-model="equip_content_value"
+        />
+      </div>
+      <div>
+        <button @click="register_equip_content()">登録</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -100,6 +121,20 @@ const MEMBER = {
     having: false,
   },
 };
+const EQUIP_TYPES = [
+  "weapon",
+  "token_weapon",
+  "head",
+  "body",
+  "hand",
+  "leg",
+  "foot",
+  "earing",
+  "neckless",
+  "blethlet",
+  "ring",
+  "token_ring",
+];
 export default {
   data: () => ({
     game_name: "",
@@ -108,6 +143,8 @@ export default {
     layer_num: 0,
     equip_type: "",
     input_name: "",
+    equip_content_name: "",
+    equip_content_value: "",
   }),
   methods: {
     async register_input() {
@@ -144,6 +181,23 @@ export default {
       set_doc("layer6.0", `layer${this.layer_num}`, {
         ...layer_data_map,
         [this.equip_type]: member_map,
+      });
+    },
+    async register_equip_content() {
+      const member_data_list = await fetch_collection("raid_members");
+      member_data_list.forEach((member_ref) => {
+        const member_id = member_ref.id;
+        const member_info = member_ref.data();
+        const update_members_info = Object.fromEntries(
+          Object.entries(member_info).map(([key, value]) => {
+            if (!EQUIP_TYPES.includes(key)) {
+              return [key, value];
+            }
+            value[this.equip_content_name] = this.equip_content_value;
+            return [key, value];
+          })
+        );
+        set_doc("raid_members", member_id, update_members_info);
       });
     },
   },

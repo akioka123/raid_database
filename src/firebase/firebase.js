@@ -65,9 +65,49 @@ export async function update_equip_hvaing(equip) {
       const member_doc = await transaction.get(member_doc_ref);
       const equip_info = member_doc.data()[equip.equip_type];
       if (equip_info.having === equip.having) {
-        equip.having = !equip.having;
+        equip_info.having = !equip_info.having;
         transaction.update(member_doc_ref, {
-          [equip.equip_type]: { having: equip.having, token: equip.token },
+          [equip.equip_type]: { ...equip_info },
+        });
+        message = "所持状況を更新しました。";
+        equip.having = !equip.having;
+        result_data = equip;
+        result = true;
+      } else {
+        result_data = equip_info;
+        message = "所持状況が更新されていました。";
+      }
+    });
+    return { message, result, data: result_data };
+  } catch (e) {
+    console.error(e);
+    return { message, result, data: result_data };
+  }
+}
+
+export async function update_token_state(equip) {
+  const member_doc_ref = doc(db, "raid_members", equip.member_id);
+  const change_state = (currentState) => {
+    if (currentState === "none") {
+      return "have";
+    } else if (currentState === "have") {
+      return "reinforce";
+    } else {
+      return "none";
+    }
+  };
+  let message = "所持状況の更新に失敗しました。";
+  let result_data = {};
+  let result = false;
+  try {
+    await runTransaction(db, async (transaction) => {
+      const member_doc = await transaction.get(member_doc_ref);
+      const equip_info = member_doc.data()[equip.equip_type];
+      if (equip_info.token_state === equip.state) {
+        equip_info.token_state = change_state(equip.state);
+        equip.state = equip_info.token_state;
+        transaction.update(member_doc_ref, {
+          [equip.equip_type]: { ...equip_info },
         });
         message = "所持状況を更新しました。";
         result_data = equip;

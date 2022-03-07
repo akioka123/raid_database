@@ -18,11 +18,16 @@
       <div v-else>データ取得中…</div>
       <div class="password my-6">
         <input
-          type="text"
+          :type="password_type"
           placeholder="パスワードの入力"
           v-model="password"
           class="pa-0"
+          autocomplete="current-password"
+          required
         />
+        <span class="password_watch" @click="change_password_type"
+          ><fc-icon :icon_name="password_icon"
+        /></span>
       </div>
       <fc-button
         class="py-2 px-7 radius-md bg-white"
@@ -40,18 +45,26 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import FcButton from "../components/FcButton.vue";
+import FcIcon from "../components/FcIcon.vue";
 import { get_doc, set_doc } from "../firebase/firebase";
 export default {
-  components: { FcButton },
+  components: { FcButton, FcIcon },
   data: () => ({
     member_infos: {},
     member_name_list: [],
     password: "",
     selected: "",
     error_message: "",
+    can_password_watch: false,
   }),
   computed: {
     ...mapState(["user_name"]),
+    password_type() {
+      return this.can_password_watch ? "text" : "password";
+    },
+    password_icon() {
+      return this.can_password_watch ? "eye-slash" : "eye";
+    },
   },
   watch: {
     member_infos() {
@@ -103,6 +116,9 @@ export default {
       return Array.from(new Uint8Array(digest))
         .map((v) => v.toString(16).padStart(2, "0"))
         .join("");
+    },
+    change_password_type() {
+      this.can_password_watch = !this.can_password_watch;
     },
   },
 };
@@ -182,5 +198,10 @@ input:focus {
   margin-left: auto;
   margin-right: auto;
   top: 20vh;
+}
+.password_watch {
+  position: relative;
+  left: 8rem;
+  bottom: 1.8rem;
 }
 </style>

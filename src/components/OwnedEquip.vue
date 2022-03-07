@@ -71,10 +71,10 @@
               :key="`${equip.equip_type}-${index}`"
             >
               <fc-button
-                :class_text="`${equip_color(
+                :class_text="`${token_equip_color(
                   equip
                 )} shadow-1 mr-2 pa-1 radius-sm`"
-                @click.native="update_having(equip)"
+                @click.native="update_token_state(equip)"
               >
                 {{ `${formatted_equip_type(equip.equip_type)}` }}
               </fc-button>
@@ -89,7 +89,7 @@
 <script>
 import FcButton from "./FcButton.vue";
 import FcChip from "./FcChip.vue";
-import { update_equip_hvaing } from "../firebase/firebase";
+import { update_equip_hvaing, update_token_state } from "../firebase/firebase";
 
 const EQUIP_TYPES = {
   weapon: "武器",
@@ -104,6 +104,12 @@ const EQUIP_TYPES = {
   blethlet: "腕",
   ring: "指",
   token_ring: "指",
+};
+
+const HAVING_STATE = {
+  none: "none",
+  have: "have",
+  reinforce: "reinforce",
 };
 
 const STRATEGY_LIST = [
@@ -250,6 +256,7 @@ export default {
                 return {
                   having: member_data[equip_type].having,
                   token: member_data[equip_type].token,
+                  state: member_data[equip_type].token_state,
                   equip_type: equip_type,
                   member_id: member_data.member_id,
                 };
@@ -278,10 +285,26 @@ export default {
         equip.having = response.data.having;
       }
     },
+    async update_token_state(equip) {
+      const response = await update_token_state(equip);
+      this.emit_message(response.message, response.result);
+      if (response.result) {
+        equip.state = response.data.state;
+      }
+    },
     equip_color(equip) {
       return equip.having
         ? "bg-accent text-white text-center"
         : "bg-sub text-black text-center";
+    },
+    token_equip_color(equip) {
+      if (equip.state === HAVING_STATE.none) {
+        return "bg-sub text-black text-center";
+      } else if (equip.state === HAVING_STATE.have) {
+        return "bg-accent text-white text-center";
+      } else if (equip.state === HAVING_STATE.reinforce) {
+        return "bg-main text-white text-center";
+      }
     },
     equip_having(equip) {
       equip.having = !equip.having;

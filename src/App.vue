@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="row tool-bar header text-white">
-      <h3 class="ma-3">装備チェック_V4</h3>
+      <h3 class="ma-3">装備チェック_V5</h3>
       <h3 class="ma-3">{{ user_name }}</h3>
     </div>
     <div class="main back">
