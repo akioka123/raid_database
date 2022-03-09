@@ -3,15 +3,19 @@
     <div>
       メンバー登録
       <div>
-        <span for="game_name">キャラ名</span>
+        <span for="player_name">プレイヤー名</span>
+        <input name="player_name" type="text" v-model="player_name" />
+      </div>
+      <div>
+        <span for="members_name">キャラ名</span>
         <input name="members_name" type="text" v-model="members_name" />
       </div>
       <div>
-        <span for="game_name">ランク</span>
+        <span for="members_rank">ランク</span>
         <input name="members_rank" type="text" v-model="members_rank" />
       </div>
       <div>
-        <span for="game_name">パスワード</span>
+        <span for="members_password">パスワード</span>
         <input name="members_password" type="text" v-model="members_password" />
       </div>
       <div>
@@ -20,6 +24,10 @@
     </div>
     <div>
       レイドメンバー登録
+      <div>
+        <span for="team_name">チーム名</span>
+        <input name="team_name" type="text" v-model="team_name" />
+      </div>
       <div>
         <span for="game_name">キャラ名</span>
         <input name="game_name" type="text" v-model="game_name" />
@@ -89,57 +97,9 @@
 <script>
 import { fetch_collection, get_doc, set_doc } from "../firebase/firebase";
 import encrypt_password from "../store/modules/encrypt";
-const MEMBER = {
-  auth: "member",
-  blethlet: {
-    having: false,
-    token: false,
-  },
-  ring: {
-    having: false,
-    token: false,
-  },
-  body: {
-    having: false,
-    token: false,
-  },
-  leg: {
-    token: false,
-    having: false,
-  },
-  neckless: {
-    token: false,
-    having: false,
-  },
-  earing: {
-    token: false,
-    having: false,
-  },
-  hand: {
-    token: false,
-    having: false,
-  },
-  foot: {
-    token: false,
-    having: false,
-  },
-  head: {
-    token: false,
-    having: false,
-  },
-  weapon: {
-    token: false,
-    having: false,
-  },
-  token_weapon: {
-    token: true,
-    having: false,
-  },
-  token_ring: {
-    token: true,
-    having: false,
-  },
-};
+
+const EQUIP_TEMPLATE = require("@/assets/template/equip_template");
+
 const EQUIP_TYPES = [
   "weapon",
   "token_weapon",
@@ -167,6 +127,7 @@ export default {
     members_name: "",
     members_rank: "",
     members_password: "",
+    player_name: "",
   }),
   methods: {
     async register_input() {
@@ -184,10 +145,12 @@ export default {
       });
     },
     register_member() {
-      set_doc("raid_members", this.game_name, {
-        ...MEMBER,
-        member_name: this.jp_name,
-        job: this.job,
+      set_doc("raid_archive", this.team_name, {
+        [this.game_name]: {
+          ...EQUIP_TEMPLATE,
+          member_name: this.jp_name,
+          job: this.job,
+        },
       });
     },
     async regist_layer_doc() {
@@ -245,6 +208,7 @@ export default {
           id: next_id,
           rank: this.members_rank,
           password: encrypt_password_text,
+          player: this.player_name,
         },
       });
       set_doc("members", "statistics", {

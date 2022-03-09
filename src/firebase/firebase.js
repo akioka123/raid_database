@@ -51,7 +51,7 @@ export async function fetch_collection(collection_name) {
 
 export async function set_doc(collection_name, doc_name, data) {
   if (check_db_exists()) {
-    await setDoc(doc(db, collection_name, doc_name), data);
+    await setDoc(doc(db, collection_name, doc_name), data, { merge: true });
   }
 }
 

@@ -1,0 +1,74 @@
+{
+  "blethlet": {
+    "having": false,
+    "token": false,
+    "raid": true,
+    "token_state": "none"
+  },
+  "ring": {
+    "having": false,
+    "raid": true,
+    "token": false,
+    "token_state": "none"
+  },
+  "body": {
+    "having": false,
+    "raid": true,
+    "token": false,
+    "token_state": "none"
+  },
+  "leg": {
+    "token": false,
+    "raid": true,
+    "having": false,
+    "token_state": "none"
+  },
+  "neckless": {
+    "token": false,
+    "raid": true,
+    "having": false,
+    "token_state": "none"
+  },
+  "earing": {
+    "token": false,
+    "raid": true,
+    "having": false,
+    "token_state": "none"
+  },
+  "hand": {
+    "token": false,
+    "raid": true,
+    "having": false,
+    "token_state": "none"
+  },
+  "foot": {
+    "token": false,
+    "raid": true,
+    "having": false,
+    "token_state": "none"
+  },
+  "head": {
+    "token": false,
+    "raid": true,
+    "having": false,
+    "token_state": "none"
+  },
+  "weapon": {
+    "token": false,
+    "raid": true,
+    "having": false,
+    "token_state": "none"
+  },
+  "token_weapon": {
+    "token": true,
+    "raid": false,
+    "having": false,
+    "token_state": "none"
+  },
+  "token_ring": {
+    "token": true,
+    "raid": false,
+    "having": false,
+    "token_state": "none"
+  }
+}
