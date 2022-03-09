@@ -1,6 +1,24 @@
 <template>
   <div>
     <div>
+      メンバー登録
+      <div>
+        <span for="game_name">キャラ名</span>
+        <input name="members_name" type="text" v-model="members_name" />
+      </div>
+      <div>
+        <span for="game_name">ランク</span>
+        <input name="members_rank" type="text" v-model="members_rank" />
+      </div>
+      <div>
+        <span for="game_name">パスワード</span>
+        <input name="members_password" type="text" v-model="members_password" />
+      </div>
+      <div>
+        <button @click="register_to_members()">登録</button>
+      </div>
+    </div>
+    <div>
       レイドメンバー登録
       <div>
         <span for="game_name">キャラ名</span>
@@ -70,6 +88,7 @@
 
 <script>
 import { fetch_collection, get_doc, set_doc } from "../firebase/firebase";
+import encrypt_password from "../store/modules/encrypt";
 const MEMBER = {
   auth: "member",
   blethlet: {
@@ -145,6 +164,9 @@ export default {
     input_name: "",
     equip_content_name: "",
     equip_content_value: "",
+    members_name: "",
+    members_rank: "",
+    members_password: "",
   }),
   methods: {
     async register_input() {
@@ -198,6 +220,35 @@ export default {
           })
         );
         set_doc("raid_members", member_id, update_members_info);
+      });
+    },
+    async register_to_members() {
+      const encrypt_password_text = await encrypt_password(
+        this.members_password
+      );
+      const member_doc = await get_doc("members", "member_info");
+      const member_info = member_doc.data();
+      const max_id_doc = await get_doc("members", "statistics");
+      const max_id = max_id_doc.data().max_id;
+      const next_id = max_id + 1;
+      console.log(member_info, {
+        ...member_info,
+        [this.members_name]: {
+          id: next_id,
+          rank: this.members_rank,
+          password: encrypt_password_text,
+        },
+      });
+      set_doc("members", "member_info", {
+        ...member_info,
+        [this.members_name]: {
+          id: next_id,
+          rank: this.members_rank,
+          password: encrypt_password_text,
+        },
+      });
+      set_doc("members", "statistics", {
+        max_id: next_id,
       });
     },
   },
